@@ -19,30 +19,30 @@ Use branch optee. We do not use NXP vendor kernel latest ga release 4.1.15.
 If want to use NXP 4.1.15 ga release, we may need to switch to 1.0.0 optee
 release.
 
-Modify arch/arm/boot/dts/imx6ul.dtsi, add the following:
-```
-diff --git a/arch/arm/boot/dts/imx6ul-14x14-evk.dts b/arch/arm/boot/dts/imx6ul-14x14-evk.dts
-index 6aaa5ec..2ac9c80 100644
---- a/arch/arm/boot/dts/imx6ul-14x14-evk.dts
-+++ b/arch/arm/boot/dts/imx6ul-14x14-evk.dts
-@@ -23,6 +23,13 @@
- 		reg = <0x80000000 0x20000000>;
- 	};
- 
-+	firmware {
-+		optee {
-+			compatible = "linaro,optee-tz";
-+			method = "smc";
-+		};
-+	};
-+
- 	regulators {
- 		compatible = "simple-bus";
- 		#address-cells = <1>;
+Patch the kernel:
 
 ```
+    diff --git a/arch/arm/boot/dts/imx6ul-14x14-evk.dts b/arch/arm/boot/dts/imx6ul-14x14-evk.dts
+    index 6aaa5ec..2ac9c80 100644
+    --- a/arch/arm/boot/dts/imx6ul-14x14-evk.dts
+    +++ b/arch/arm/boot/dts/imx6ul-14x14-evk.dts
+    @@ -23,6 +23,13 @@
+     		reg = <0x80000000 0x20000000>;
+     	};
+     
+    +	firmware {
+    +		optee {
+    +			compatible = "linaro,optee-tz";
+    +			method = "smc";
+    +		};
+    +	};
+    +
+     	regulators {
+     		compatible = "simple-bus";
+     		#address-cells = <1>;
+```
 
-####Compile the Kernel:
+#### Compile the Kernel:
 
 ```
 make ARCH=arm imx_v6_v7_defconfig
