@@ -58,7 +58,8 @@ Copy zImage and imx6ul_14x14_evk.dtb to SD card.
 
 > Code: https://github.com/MrVan/optee_os/commits/master
 
-Compile:
+How to Compile:
+
 ```c
 PLATFORM_FLAVOR=mx6ulevk make ARCH=arm PLATFORM=imx DEBUG=1 CFG_TEE_CORE_LOG_LEVEL=0
 arm-poky-linux-gnueabi-objdump -D out/arm-plat-imx/core/tee.elf > tee.s
