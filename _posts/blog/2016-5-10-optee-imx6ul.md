@@ -56,18 +56,19 @@ Copy zImage and imx6ul_14x14_evk.dtb to SD card.
 
 ### 3. OP-TEE OS
 
-```
-Code: https://github.com/MrVan/optee_os/commits/master
+> Code: https://github.com/MrVan/optee_os/commits/master
+
 Compile:
+```
 PLATFORM_FLAVOR=mx6ulevk make ARCH=arm PLATFORM=imx DEBUG=1 CFG_TEE_CORE_LOG_LEVEL=0
 arm-poky-linux-gnueabi-objdump -D out/arm-plat-imx/core/tee.elf > tee.s
 arm-poky-linux-gnueabi-objcopy -O binary out/arm-plat-imx/core/tee.elf optee.bin
 If want to see more log, change CFG_TEE_CORE_LOG_LEVEL to 4.
 ```
 
-OPTEE CLIENT
+### 4. OPTEE CLIENT
+> Code: https://github.com/OP-TEE/optee_client
 ```
-Code: https://github.com/OP-TEE/optee_client
 Tested commit:
 "
 88acd6bda5f9e19124fce0015fe64a6644eff036
@@ -80,9 +81,10 @@ After compilation:
 Copy all files in out/export/* to your rootfs root directory in your sd card.
 ```
 
-OPTEE XTEST
+### 5. OPTEE XTEST
+
+> Code: https://github.com/OP-TEE/optee_test
 ```
-Code: https://github.com/OP-TEE/optee_test
 Tested commit:
 "
 commit c8186b363cd3e36946041a9365f2fd423288e227
@@ -91,8 +93,9 @@ Date:   Fri Apr 8 11:35:17 2016 +0200
 
     Use correct Android include paths
 "
+
 Compile, please change the directory to yours:
-"
+
 export TA_DEV_KIT_DIR=/home/Freenix/work/forfun/trustzone/optee_os/out/arm-plat-imx/export-ta_arm32
 export OPTEE_CLIENT_EXPORT=/home/Freenix/work/forfun/trustzone/optee_client/out/export
 export CROSS_COMPILE_HOST=arm-poky-linux-gnueabi-
@@ -100,15 +103,15 @@ export CROSS_COMPILE_TA=arm-poky-linux-gnueabi-
 export CROSS_COMPILE=arm-poky-linux-gnueabi-
 
 make ARCH=arm
-"
-
-After compilation:
-Copy all xx.ta in out/* to your sd card rootfs /lib/optee_armtz/
-Copy xtest to your sd card rootfs /bin
-
 ```
 
-Boot your optee os:
+After compilation:
+
+> Copy all xx.ta in out/* to your sd card rootfs /lib/optee_armtz/
+> Copy xtest to your sd card rootfs /bin
+
+### 6. Boot your optee os:
+
 ```
     run loadfdt;
     run loadimage;
