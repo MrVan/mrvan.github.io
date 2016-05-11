@@ -111,8 +111,8 @@ make ARCH=arm
 
 After compilation:
 
-- 1. Copy all xx.ta in out/* to your sd card rootfs /lib/optee_armtz/
-- 2. Copy xtest to your sd card rootfs /bin
+-  Copy all xx.ta in out/* to your sd card rootfs /lib/optee_armtz/
+-  Copy xtest to your sd card rootfs /bin
 
 ### 6. Boot your optee os:
 
