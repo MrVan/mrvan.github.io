@@ -21,7 +21,7 @@ release.
 
 Patch the kernel:
 
-```
+```c
     diff --git a/arch/arm/boot/dts/imx6ul-14x14-evk.dts b/arch/arm/boot/dts/imx6ul-14x14-evk.dts
     index 6aaa5ec..2ac9c80 100644
     --- a/arch/arm/boot/dts/imx6ul-14x14-evk.dts
