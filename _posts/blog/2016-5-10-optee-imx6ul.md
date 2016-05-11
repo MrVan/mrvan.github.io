@@ -59,7 +59,7 @@ Copy zImage and imx6ul_14x14_evk.dtb to SD card.
 > Code: https://github.com/MrVan/optee_os/commits/master
 
 Compile:
-```
+```c
 PLATFORM_FLAVOR=mx6ulevk make ARCH=arm PLATFORM=imx DEBUG=1 CFG_TEE_CORE_LOG_LEVEL=0
 arm-poky-linux-gnueabi-objdump -D out/arm-plat-imx/core/tee.elf > tee.s
 arm-poky-linux-gnueabi-objcopy -O binary out/arm-plat-imx/core/tee.elf optee.bin
@@ -67,8 +67,10 @@ If want to see more log, change CFG_TEE_CORE_LOG_LEVEL to 4.
 ```
 
 ### 4. OPTEE CLIENT
+
 > Code: https://github.com/OP-TEE/optee_client
-```
+
+```c
 Tested commit:
 "
 88acd6bda5f9e19124fce0015fe64a6644eff036
@@ -84,7 +86,8 @@ Copy all files in out/export/* to your rootfs root directory in your sd card.
 ### 5. OPTEE XTEST
 
 > Code: https://github.com/OP-TEE/optee_test
-```
+
+```c
 Tested commit:
 "
 commit c8186b363cd3e36946041a9365f2fd423288e227
@@ -107,12 +110,12 @@ make ARCH=arm
 
 After compilation:
 
-> Copy all xx.ta in out/* to your sd card rootfs /lib/optee_armtz/
-> Copy xtest to your sd card rootfs /bin
+- 1. Copy all xx.ta in out/* to your sd card rootfs /lib/optee_armtz/
+- 2. Copy xtest to your sd card rootfs /bin
 
 ### 6. Boot your optee os:
 
-```
+```c
     run loadfdt;
     run loadimage;
     fatload mmc 1:1 0x9c100000 optee.bin;
