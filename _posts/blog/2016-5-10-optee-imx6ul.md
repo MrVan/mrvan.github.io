@@ -56,7 +56,7 @@ Copy zImage and imx6ul_14x14_evk.dtb to SD card.
 
 ### 3. OP-TEE OS
 
-> Code: https://github.com/MrVan/optee_os/commits/master
+> Code: https://github.com/OP-TEE/optee_os
 
 How to Compile:
 
