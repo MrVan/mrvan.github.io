@@ -1,0 +1,56 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'install', 'bower', '--global' ]
+2 info using npm@2.14.12
+3 info using node@v4.3.1
+4 verbose install initial load of /usr/lib/package.json
+5 verbose readDependencies loading dependencies from /usr/lib/package.json
+6 silly cache add args [ 'bower', null ]
+7 verbose cache add spec bower
+8 silly cache add parsed spec Result {
+8 silly cache add   raw: 'bower',
+8 silly cache add   scope: null,
+8 silly cache add   name: 'bower',
+8 silly cache add   rawSpec: '',
+8 silly cache add   spec: 'latest',
+8 silly cache add   type: 'tag' }
+9 silly addNamed bower@latest
+10 verbose addNamed "latest" is being treated as a dist-tag for bower
+11 info addNameTag [ 'bower', 'latest' ]
+12 silly mapToRegistry name bower
+13 silly mapToRegistry using default registry
+14 silly mapToRegistry registry https://registry.npmjs.org/
+15 silly mapToRegistry uri https://registry.npmjs.org/bower
+16 verbose addNameTag registry:https://registry.npmjs.org/bower not in flight; fetching
+17 verbose request uri https://registry.npmjs.org/bower
+18 verbose request no auth needed
+19 info attempt registry request try #1 at 15:09:20
+20 verbose request id bfaa3f8531ba676b
+21 http request GET https://registry.npmjs.org/bower
+22 info retry will retry, error on last attempt: Error: socket hang up
+23 info attempt registry request try #2 at 15:10:56
+24 http request GET https://registry.npmjs.org/bower
+25 info retry will retry, error on last attempt: Error: socket hang up
+26 info attempt registry request try #3 at 15:13:49
+27 http request GET https://registry.npmjs.org/bower
+28 verbose stack Error: socket hang up
+28 verbose stack     at TLSSocket.onHangUp (_tls_wrap.js:1048:19)
+28 verbose stack     at TLSSocket.g (events.js:260:16)
+28 verbose stack     at emitNone (events.js:72:20)
+28 verbose stack     at TLSSocket.emit (events.js:166:7)
+28 verbose stack     at endReadableNT (_stream_readable.js:905:12)
+28 verbose stack     at nextTickCallbackWith2Args (node.js:437:9)
+28 verbose stack     at process._tickCallback (node.js:351:17)
+29 verbose cwd /home/Freenix/Documents/note/jekyll_demo/_posts/blog
+30 error Linux 4.1.12-1-default
+31 error argv "/usr/bin/node" "/usr/bin/npm" "install" "bower" "--global"
+32 error node v4.3.1
+33 error npm  v2.14.12
+34 error code ECONNRESET
+35 error network socket hang up
+35 error network This is most likely not a problem with npm itself
+35 error network and is related to network connectivity.
+35 error network In most cases you are behind a proxy or have bad network settings.
+35 error network
+35 error network If you are behind a proxy, please make sure that the
+35 error network 'proxy' config is set properly.  See: 'npm help config'
+36 verbose exit [ 1, true ]

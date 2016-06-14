@@ -1,3 +1,10 @@
+---
+layout: post
+title: clock framework part 1
+description: clock framework part 1
+category: blog
+---
+
 clk framework是基于consumer和provider来设计的。consumer故名思议是使用clk的个体。这里我们看一下consumer可以使用的API有哪些
 ```code
 int clk_prepare(struct clk *clk);
