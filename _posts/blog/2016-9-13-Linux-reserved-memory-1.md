@@ -37,11 +37,13 @@ category: blog
 ```
 
 此处initial_boot_params其实是device tree所在的虚拟地址。
+
 699行，查询memreserve结点，然后702行会把相应的address space写入一个memblock结构体，
 memblock结构主要是在用在kernel boot阶段，我们知道kernel使用的是buddy page系统，
 在kernel启动过程中，会有一个从memblock到buddy page的切换过程，所有没有被标记为reserve的
 memblock会被释放然后迁移到buddy page系统，这也就意味着，所以被reserve的memblock，不会
 进入buddy page系统，也就不会被kernel的mm子系统所管理。
+
 705行，遍历所有的dts节点，执行`__fdt_scan_reserved_mem`函数，这里面核心的代码主要是：
 
 ```c
@@ -57,7 +59,9 @@ memblock系统里面reserve这部分memory，同时`fdt_reserved_mem_save_node`�
 这里的主要目的是为了和reg区分。如果这里的size被赋值，那么后面就没法区分是否有提供reg属性了。
 在`fdt_init_reserved_mem`中会检测size，如果size为0，那么表示这个rmem不是基于reg的，就会
 重新从dts里面获取size值。
+
 `fdt_init_reserved_mem` 分配和初始化所有的reserved memory regions.
+
 + 首先检查是否有overlap
 + 遍历rmem数组
   - 获取phandle或者linux,phandle
