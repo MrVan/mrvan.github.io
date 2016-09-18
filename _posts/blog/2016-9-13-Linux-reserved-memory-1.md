@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Linux reserved memory
+title: Linux reserved memory part 1
 description: Linux reserved memory
 category: blog
 ---
