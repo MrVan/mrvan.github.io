@@ -58,10 +58,10 @@ memblock系统里面reserve这部分memory，同时`fdt_reserved_mem_save_node`�
 在`fdt_init_reserved_mem`中会检测size，如果size为0，那么表示这个rmem不是基于reg的，就会
 重新从dts里面获取size值。
 `fdt_init_reserved_mem` 分配和初始化所有的reserved memory regions.
-1. 首先检查是否有overlap
-2. 遍历rmem数组
-   - 获取phandle或者linux,phandle
-   - 如果`mem->size`0，表明dts里面没有提供reg，而是提供的size,这样就需要在memblock系统中分配一段内存，reserve出来，如果分配成功，会填充rmem数组中的base和size，到这里就和提供reg属性的rmem没有区别了。
-   - `__reserved_mem_init_node`，遍历`__reservedmem_of_table`，执行initfn函数。
++ 首先检查是否有overlap
++ 遍历rmem数组
+  - 获取phandle或者linux,phandle
+  - 如果`mem->size`0，表明dts里面没有提供reg，而是提供的size,这样就需要在memblock系统中分配一段内存，reserve出来，如果分配成功，会填充rmem数组中的base和size，到这里就和提供reg属性的rmem没有区别了。
+  - `__reserved_mem_init_node`，遍历`__reservedmem_of_table`，执行initfn函数。
 
 所有`__reservedmem_of_table`中的项都是通过`ESERVEDMEM_OF_DECLARE`来注册的。
