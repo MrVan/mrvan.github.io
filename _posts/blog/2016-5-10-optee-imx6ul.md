@@ -39,7 +39,6 @@ How to Compile:
 make PLATFORM=imx-mx6ulevk ARCH=arm CFG_PAGEABLE_ADDR=0 CFG_NS_ENTRY_ADDR=0x80800000 CFG_DT_ADDR=0x83000000 CFG_DT=y DEBUG=y CFG_TEE_CORE_LOG_LEVEL=4
 mkimage -A arm -O linux -C none -a 0x9c0fffe4 -e 0x9c100000 -d ./out/arm-plat-imx/core/tee.bin uTee
 ```
-
 Recommend you use the mkimage from uboot/tools.
 
 If do not want to see lots log, change CFG_TEE_CORE_LOG_LEVEL to 0.
@@ -74,12 +73,13 @@ make ARCH=arm
 
 After compilation:
 
--  Copy all xx.ta in out/* to your sd card rootfs /lib/optee_armtz/
+-  Copy all xx.ta xx.elf in out/* to your sd card rootfs /lib/optee_armtz/
 -  Copy xtest to your sd card rootfs /bin
 
 ### 6. Boot your optee os:
 
 ```c
+    run findfdt;
     run loadfdt;
     run loadimage;
     fatload mmc 1:1 0x84000000 uTee;
