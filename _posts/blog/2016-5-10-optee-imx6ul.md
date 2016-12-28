@@ -5,54 +5,29 @@ description: How to run OP-TEE on i.MX6UL
 category: blog
 ---
 
-### 1. Get [U-Boot](https://github.com/MrVan/uboot/commit/4f016adae573aaadd7bf6a37f8c58a882b391ae6)
+### 1. Get [U-Boot](https://github.com/MrVan/u-boot/commits/imx_v2016.03_4.1.15_2.0.0_ga)
 
 ```
-make ARCH=arm mx6ul_14x14_evk_optee_defconfig
-make ARCH=arm
-Burn u-boot.imx to offset 0x400 of SD card
+Compile:
+  make ARCH=arm mx6ul_14x14_evk_optee_defconfig
+  make ARCH=arm
+Burn u-boot.imx to offset 0x400 of SD card:
+  dd if=u-boot.imx of=/dev/sd[x] bs=512 seek=2 conv=sync conv=notrunc
 ```
 
-### 2. Get [Linux Kernel](https://github.com/linaro-swg/linux/tree/optee)
+### 2. Get [Linux Kernel](https://github.com/MrVan/linux/tree/imx_4.1.15_2.0.0_ga)
 
-Use branch optee. We do not use NXP vendor kernel latest ga release 4.1.15.
-If want to use NXP 4.1.15 ga release, we may need to switch to 1.0.0 optee
-release.
-
-Patch the kernel:
-
-```c
-    diff --git a/arch/arm/boot/dts/imx6ul-14x14-evk.dts b/arch/arm/boot/dts/imx6ul-14x14-evk.dts
-    index 6aaa5ec..2ac9c80 100644
-    --- a/arch/arm/boot/dts/imx6ul-14x14-evk.dts
-    +++ b/arch/arm/boot/dts/imx6ul-14x14-evk.dts
-    @@ -23,6 +23,13 @@
-     		reg = <0x80000000 0x20000000>;
-     	};
-     
-    +	firmware {
-    +		optee {
-    +			compatible = "linaro,optee-tz";
-    +			method = "smc";
-    +		};
-    +	};
-    +
-     	regulators {
-     		compatible = "simple-bus";
-     		#address-cells = <1>;
-```
+Use NXP vendor kernel latest ga release 4.1.15.
 
 #### Compile the Kernel:
 
 ```
-make ARCH=arm imx_v6_v7_defconfig
-make menuconfig
-select the two entries
-	CONFIG_TEE=y
-	CONFIG_OPTEE
+make ARCH=arm imx_v7_defconfig
 make ARCH=arm
 ```
 Copy zImage and imx6ul_14x14_evk.dtb to SD card.
+
+In the dts file, caam is disabled. This will be added in future.
 
 ### 3. OP-TEE OS
 
@@ -61,23 +36,19 @@ Copy zImage and imx6ul_14x14_evk.dtb to SD card.
 How to Compile:
 
 ```c
-PLATFORM_FLAVOR=mx6ulevk make ARCH=arm PLATFORM=imx DEBUG=1 CFG_TEE_CORE_LOG_LEVEL=0
-arm-poky-linux-gnueabi-objdump -D out/arm-plat-imx/core/tee.elf > tee.s
-arm-poky-linux-gnueabi-objcopy -O binary out/arm-plat-imx/core/tee.elf optee.bin
-If want to see more log, change CFG_TEE_CORE_LOG_LEVEL to 4.
+make PLATFORM=imx-mx6ulevk ARCH=arm CFG_PAGEABLE_ADDR=0 CFG_NS_ENTRY_ADDR=0x80800000 CFG_DT_ADDR=0x83000000 CFG_DT=y DEBUG=y CFG_TEE_CORE_LOG_LEVEL=4
+mkimage -A arm -O linux -C none -a 0x9c0fffe4 -e 0x9c100000 -d ./out/arm-plat-imx/core/tee.bin uTee
 ```
+
+Recommend you use the mkimage from uboot/tools.
+
+If do not want to see lots log, change CFG_TEE_CORE_LOG_LEVEL to 0.
 
 ### 4. OPTEE CLIENT
 
 > Code: https://github.com/OP-TEE/optee_client
 
 ```c
-Tested commit:
-"
-88acd6bda5f9e19124fce0015fe64a6644eff036
-Support OP-TEE in generic TEE subsystem
-"
-Compile:
 make ARCH=arm
 
 After compilation:
@@ -89,14 +60,6 @@ Copy all files in out/export/* to your rootfs root directory in your sd card.
 > Code: https://github.com/OP-TEE/optee_test
 
 ```c
-Tested commit:
-"
-commit c8186b363cd3e36946041a9365f2fd423288e227
-Author: Zoltan Kuscsik <zoltan.kuscsik@linaro.org>
-Date:   Fri Apr 8 11:35:17 2016 +0200
-
-    Use correct Android include paths
-"
 
 Compile, please change the directory to yours:
 
@@ -119,9 +82,9 @@ After compilation:
 ```c
     run loadfdt;
     run loadimage;
-    fatload mmc 1:1 0x9c100000 optee.bin;
+    fatload mmc 1:1 0x84000000 uTee;
     run mmcargs;
-    bootz ${loadaddr} - ${fdt_addr};
+    bootz 0x84000000 - ${fdt_addr};
 
     After linux boots up.
     Run: tee-supplicant &
