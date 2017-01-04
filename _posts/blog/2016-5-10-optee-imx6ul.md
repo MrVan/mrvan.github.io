@@ -84,7 +84,7 @@ After compilation:
     run loadimage;
     fatload mmc 1:1 0x84000000 uTee;
     run mmcargs;
-    bootz 0x84000000 - ${fdt_addr};
+    bootm 0x84000000 - ${fdt_addr};
 
     After linux boots up.
     Run: tee-supplicant &
