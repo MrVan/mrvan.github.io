@@ -1,3 +1,10 @@
+---
+layout: post
+title: gcc volatile
+description: gcc volatile
+category: blog
+---
+
 C语言中有volatile对象，他们通常用来通过指针来访问硬件或用做进程间通信. C标准
 只是说对于volatile对象的访问，编译器应该不做优化，但是它是implementation
 defined as to what constitutes a volatile object.
