@@ -114,3 +114,34 @@ assembly code when optimizing. This can lead to unexpected duplicate symbol
 errors during compilation if your asm code defines symbols or labels.
 Using ‘%=’ (see AssemblerTemplate) may help resolve this problem.
 ```
+
+Here there is another posts: https://gcc.gnu.org/ml/gcc-help/2011-04/msg00174.html
+But in latest extend.text, I could not find this piece of doc.
+```
+Index: extend.texi
+===================================================================
+--- extend.texi	(revision 172305)
++++ extend.texi	(working copy)
+@@ -5784,8 +5784,20 @@
+
+ Similarly, you can't expect a
+ sequence of volatile @code{asm} instructions to remain perfectly
+-consecutive.  If you want consecutive output, use a single @code{asm}.
+-Also, GCC will perform some optimizations across a volatile @code{asm}
++consecutive, meaning that the different volatile @code{asm} instructions
++might get interspersed with assembler instructions from other code parts.
++The volatile @code{asm} instructions will not be reordered though, so the
++volatile @code{asm} instructions will appear in the same order in the
++assembler output as they appear in the source code.
++If you want completely consecutive output (not interspersed with
++assembler instructions from other code parts), use a single @code{asm}.
++volatile @code{asm} instructions are treated in a similar
++manner as accesses to volatile objects. That means that
++volatile @code{asm} instructions will not be moved across accesses to
++volatile objects, so all accesses to volatile objects and all
++volatile @code{asm} instructions will stay in the order as defined
++by the source code.
++GCC will perform some optimizations across a volatile @code{asm}
+ instruction; GCC does not ``forget everything'' when it encounters
+ a volatile @code{asm} instruction the way some other compilers do.
+```
