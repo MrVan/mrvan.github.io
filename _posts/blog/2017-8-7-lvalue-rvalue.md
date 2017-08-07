@@ -1,9 +1,4 @@
----
-layout: post
-title: lvalue rvalue
-description: lvalue rvalue
-category: blog
----
+
 From https://msdn.microsoft.com/en-us/library/f90831hc.aspx
 
 每一个C++表达式要么是rvalue，要么是lvalue. lvalue指向的对象在单个表达式之
