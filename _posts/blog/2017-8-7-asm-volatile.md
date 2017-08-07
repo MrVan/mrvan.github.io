@@ -1,6 +1,6 @@
 ---
 layout: post
-title: What does asm volatile means?
+title: asm volatile
 description: what does asm volatile means?
 category: blog
 ---
