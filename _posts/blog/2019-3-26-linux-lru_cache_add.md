@@ -1,13 +1,13 @@
 ---
 layout: post
-title: Linux lru\_cache\_add
+title: Linux lru_cache_add
 description: Linux LRU
 category: blog
 ---
 
-`lru_cache_add` Queue the page for addition to the LRU via pagevec.
-是否加入`[in]active [file|anon]` 列表会被推迟到pagevec被drain. 这样就
-可以给`lru_cache_add`的调用者一个机会通过`mark_page_accessed`来把page
+lru\_cache\_add Queue the page for addition to the LRU via pagevec.
+是否加入\[in\]active \[file|anon\] 列表会被推迟到pagevec被drain. 这样就
+可以给lru\_cache\_add的调用者一个机会通过mark\_page\_accessed来把page
 重新加入active list.
 
 ```
@@ -39,12 +39,12 @@ category: blog
  406 }
 ```
 
-400,405行是获取和释放lru_add_pvec percpu变量, `get_cpu_var` 和 `put_cpu_var`
+400,405行是获取和释放lru\_add\_pvec percpu变量, get\_cpu\_var 和 put\_cpu\_var
 会禁止当前cpu的调度，这是必须的，不然进程迁移会导致错误的percpu变量访问.
 
 403行，把page加入到pagevec中，如果是compound page或者pagevec已满则直接加入lru
 
-404行`__pagevec_lru_add`,遍历pvec中的page加入page所在的pgdata的lrurec list
+404行\_\_pagevec\_lru\_add,遍历pvec中的page加入page所在的pgdata的lrurec list
 
 ```c
  914 /*
@@ -59,7 +59,7 @@ category: blog
 ```
 
 这里我们不考虑memcg的话,`mem_cgroup_page_lruvec(page, pgdat);`直接返回
-当前pgdat的lrurec list/array,核心函数当然是`__pagevec_lru_add_fn`.
+当前pgdat的lrurec list/array,核心函数当然是\_\_pagevec\_lru\_add\_fn
 
 ```c
  859 static void __pagevec_lru_add_fn(struct page *page, struct lruvec *lruvec,
@@ -119,15 +119,20 @@ category: blog
 ```
 
 863行判断当前page was\_evictable, was表示之前,不表示现在, 并且清掉这个标志位.
+
 865行如果page已经设置LRU状态,表明有bug,因为page已经在LRU链表里了,再次加入LRU
 肯定有bug.
+
 867行设置page的LRU标志
+
 894行smp\_mb,为什么要加呢？防止编译器和处理器乱序访问.根据注释,如果\#1没有
 观察到\#0处的LRU置位,显示的barrier会确保page\#evictable 检查可以把page放入
 正确的LRU.如果没有smp\#mb,SetPageLRU可能会被重排到PageMlocked之后,这样\#1
 处page ioslation会失败,这是\#0处也同时在访问这个page的flags,那么就会把
 evictable page放入unevictable LRU,所以需要显示的smp\_mb.
-896行如果page是evictable,page\_lru是根据page来找到这个page应该被放在哪个LRU list
-902行else代码段,表示page不能被evict,清active标志,置位Unevictable标志
-910行把page加入对应的lru链表
 
+896行如果page是evictable,page\_lru是根据page来找到这个page应该被放在哪个LRU list
+
+902行else代码段,表示page不能被evict,清active标志,置位Unevictable标志
+
+910行把page加入对应的lru链表
